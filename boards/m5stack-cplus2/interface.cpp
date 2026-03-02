@@ -126,7 +126,14 @@ void checkReboot() {
                 tft.setTextSize(1);
                 tft.setTextColor(bruceConfig.priColor, bruceConfig.bgColor);
                 countDown = (millis() - time_count) / 1000 + 1;
-                tft.printf(" PWR OFF IN %d/3\n", countDown);
+                if (countDown < 4) {
+                    tft.printf(" PWR OFF IN %d/3\n", countDown);
+                } else {
+                    tft.fillScreen(bruceConfig.bgColor);
+                    while (digitalRead(UP_BTN) == LOW);
+                    delay(200);
+                    powerOff();
+                }
                 vTaskDelay(10 / portTICK_RATE_MS);
             }
         }
